@@ -40,15 +40,16 @@ def upload():
         from keras.preprocessing import image
 
         from keras.models import load_model
-        new_model = load_model('multiclass_model.h5')
+        new_model = load_model('multiclass_model1.h5')
+        ages_model=load_model('age_model.h5')
         new_model.summary()
         test_image = image.load_img('images\\' + filename, target_size=(64, 64))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
-        result = new_model.predict(test_image)
-        result1 = result[0]
+        result = new_model.predict(test_image)[0]
+        age_proba = ages_model.predict(image)[0].astype(int)
+        inv_map = {v: k for k, v in label.items()}
         for i in range(8):
-
             if result1[i] == 1.:
                 break;
         prediction = classes[i]
